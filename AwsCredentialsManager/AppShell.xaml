@@ -4,11 +4,10 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:AwsCredentialsManager"
-    Shell.FlyoutBehavior="Disabled"
-    Title="AwsCredentialsManager">
+    FlyoutBehavior="Disabled"
+    Title="AWS Credentials Manager">
 
     <ShellContent
-        Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
