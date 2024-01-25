@@ -9,7 +9,7 @@ public class MainPageViewModel
 	public ObservableCollection<AwsAccount> Accounts { get; set; } = [];
 }
 
-public partial class MainPage : ContentPage
+public partial class MainPage
 {
 	private readonly MainPageViewModel _viewModel = new MainPageViewModel();
 	private readonly string _credentialsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".aws\\credentials");
@@ -97,13 +97,12 @@ public partial class MainPage : ContentPage
 		try
 		{
 			var backupPath = $"{_credentialsPath}.{DateTime.UtcNow:yyyyMMddHHmmss}.bak";
-			var outputPath = DebugCheckbox.IsChecked ? backupPath : _credentialsPath;
 
 			File.Copy(_credentialsPath, backupPath);
 
 			_viewModel.SelectedAccount!.SetProperties(InputEditor.Text);
 
-			await using var sw = new StreamWriter(outputPath);
+			await using var sw = new StreamWriter(_credentialsPath);
 
 			foreach (var account in _viewModel.Accounts)
 			{

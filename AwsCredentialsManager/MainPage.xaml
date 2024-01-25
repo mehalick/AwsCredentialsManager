@@ -46,16 +46,13 @@
 
 			</CollectionView>
 
+			<Label Text="Paste credentials" />
+
 			<Editor x:Name="InputEditor" AutoSize="TextChanges">
 				<Editor.Behaviors>
 					<toolkit:SelectAllTextBehavior />
 				</Editor.Behaviors>
 			</Editor>
-
-			<HorizontalStackLayout>
-				<CheckBox x:Name="DebugCheckbox" IsChecked="True" />
-				<Label Text="Debug" VerticalOptions="Center" />
-			</HorizontalStackLayout>
 
 			<Button
 				x:Name="SaveButton"
