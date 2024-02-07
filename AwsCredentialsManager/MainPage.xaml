@@ -26,29 +26,12 @@
 					Title="Select credentials"
 					ItemsSource="{Binding Accounts}"
 					ItemDisplayBinding="{Binding Name}"
-					SelectedItem="{Binding SelectedAccount, Mode = TwoWay}" />
+					SelectedItem="{Binding SelectedAccount, Mode = TwoWay}"
+					IsEnabled="False" />
 
-			<CollectionView
-				ItemsSource="{Binding Accounts}"
-				ItemsLayout="VerticalGrid, 4">
+			<Label x:Name="InputLabel" Text="Paste credentials" IsEnabled="False" />
 
-				<CollectionView.ItemTemplate>
-					<DataTemplate x:DataType="awsCredentialsManager:AwsAccount">
-						<Frame
-							BackgroundColor="Green">
-							<StackLayout>
-								<Label Text="{Binding Name}" />
-								<Label Text="{Binding AccessKeyId}" />
-							</StackLayout>
-						</Frame>
-					</DataTemplate>
-				</CollectionView.ItemTemplate>
-
-			</CollectionView>
-
-			<Label Text="Paste credentials" />
-
-			<Editor x:Name="InputEditor" AutoSize="TextChanges">
+			<Editor x:Name="InputEditor" AutoSize="TextChanges" MinimumHeightRequest="200" IsEnabled="False">
 				<Editor.Behaviors>
 					<toolkit:SelectAllTextBehavior />
 				</Editor.Behaviors>
@@ -60,7 +43,7 @@
 				SemanticProperties.Hint="Saves AWS credentials to file"
 				Clicked="OnSaveClicked"
 				HorizontalOptions="Fill"
-				IsEnabled="False"/>
+				IsEnabled="False" />
 
 		</VerticalStackLayout>
 	</ScrollView>

@@ -50,6 +50,9 @@ public partial class MainPage
 			_viewModel.SelectedAccount = _viewModel.Accounts.FirstOrDefault();
 
 			CredentialsPicker.SelectedIndex = 0;
+			CredentialsPicker.IsEnabled = true;
+			InputLabel.IsEnabled = true;
+			InputEditor.IsEnabled = true;
 			SaveButton.IsEnabled = true;
 		}
 		catch (Exception ex)
