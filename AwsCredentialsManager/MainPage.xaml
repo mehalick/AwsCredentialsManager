@@ -2,36 +2,21 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-			 xmlns:awsCredentialsManager="using:AwsCredentialsManager"
 			 x:Class="AwsCredentialsManager.MainPage">
 
 	<ScrollView>
-		<VerticalStackLayout
-			Padding="30,0"
-			Spacing="25">
-			<Image
-				Source="dotnet_bot.png"
-				HeightRequest="185"
-				Aspect="AspectFit"
-				SemanticProperties.Description="dot net bot in a race car number eight" />
+		<VerticalStackLayout x:Name="MainLayout" Padding="25" Spacing="25" IsVisible="False">
 
-			<Button
-				x:Name="LoadButton"
-				Text="Load Credentials"
-				SemanticProperties.Hint="Loads AWS credentials from file"
-				Clicked="OnLoadClicked"
-				HorizontalOptions="Fill" />
+			<Label Text="Select credentials" />
 
 			<Picker x:Name="CredentialsPicker"
-					Title="Select credentials"
 					ItemsSource="{Binding Accounts}"
 					ItemDisplayBinding="{Binding Name}"
-					SelectedItem="{Binding SelectedAccount, Mode = TwoWay}"
-					IsEnabled="False" />
+					SelectedItem="{Binding SelectedAccount, Mode = TwoWay}" />
 
-			<Label x:Name="InputLabel" Text="Paste credentials" IsEnabled="False" />
+			<Label x:Name="InputLabel" Text="Paste credentials" />
 
-			<Editor x:Name="InputEditor" AutoSize="TextChanges" MinimumHeightRequest="200" IsEnabled="False">
+			<Editor x:Name="InputEditor" AutoSize="TextChanges" MinimumHeightRequest="200">
 				<Editor.Behaviors>
 					<toolkit:SelectAllTextBehavior />
 				</Editor.Behaviors>
@@ -42,8 +27,7 @@
 				Text="Save Credentials"
 				SemanticProperties.Hint="Saves AWS credentials to file"
 				Clicked="OnSaveClicked"
-				HorizontalOptions="Fill"
-				IsEnabled="False" />
+				HorizontalOptions="Fill" />
 
 		</VerticalStackLayout>
 	</ScrollView>

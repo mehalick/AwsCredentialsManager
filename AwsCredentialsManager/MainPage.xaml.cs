@@ -6,7 +6,7 @@ public class MainPageViewModel
 {
 	public AwsAccount? SelectedAccount { get; set; }
 
-	public ObservableCollection<AwsAccount> Accounts { get; set; } = [];
+	public ObservableCollection<AwsAccount> Accounts { get; } = [];
 }
 
 public partial class MainPage
@@ -17,25 +17,26 @@ public partial class MainPage
 	public MainPage()
 	{
 		InitializeComponent();
-		InitializeControls();
-	}
 
-	private void InitializeControls()
-	{
 		BindingContext = _viewModel;
 	}
 
-	private async void OnLoadClicked(object sender, EventArgs e)
+	protected override async void OnAppearing()
 	{
-		SemanticScreenReader.Announce(LoadButton.Text);
+		base.OnAppearing();
 
+		await LoadCredentials();
+	}
+
+	private async Task LoadCredentials()
+	{
 		try
 		{
 			var accounts = await GetAccountsFromFile();
 
 			if (accounts.Count == 0)
 			{
-				await ShowToast("No accounts found in credentials file");
+				await ShowAlert("No accounts found in credentials file");
 
 				return;
 			}
@@ -50,14 +51,12 @@ public partial class MainPage
 			_viewModel.SelectedAccount = _viewModel.Accounts.FirstOrDefault();
 
 			CredentialsPicker.SelectedIndex = 0;
-			CredentialsPicker.IsEnabled = true;
-			InputLabel.IsEnabled = true;
-			InputEditor.IsEnabled = true;
-			SaveButton.IsEnabled = true;
+
+			MainLayout.IsVisible = true;
 		}
 		catch (Exception ex)
 		{
-			await ShowToast(ex.Message);
+			await ShowAlert(ex.Message);
 		}
 	}
 
@@ -115,18 +114,17 @@ public partial class MainPage
 				}
 			}
 
-			SaveButton.IsEnabled = false;
 			InputEditor.Text = "";
 
-			await ShowToast("Credentials saved");
+			await ShowAlert("Credentials saved");
 		}
 		catch (Exception ex)
 		{
-			await ShowToast(ex.Message);
+			await ShowAlert(ex.Message);
 		}
 	}
 
-	private async Task ShowToast(string message)
+	private async Task ShowAlert(string message)
 	{
 		await DisplayAlert("", message, "Got it");
 
