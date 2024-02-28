@@ -1,16 +1,12 @@
-# editorconfig.org
-
-# top-most EditorConfig file
 root = true
 
-# Default settings:
 [*]
-insert_final_newline = true
-indent_style = tab
-dotnet_style_operator_placement_when_wrapping = beginning_of_line
-tab_width = 4
+indent_style = space
 indent_size = 4
+insert_final_newline = true
 end_of_line = crlf
+
+dotnet_style_operator_placement_when_wrapping = beginning_of_line
 dotnet_style_coalesce_expression = true:suggestion
 dotnet_style_null_propagation = true:suggestion
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
@@ -91,7 +87,7 @@ dotnet_naming_rule.camel_case_for_private_internal_fields.style = camel_case_und
 dotnet_naming_symbols.private_internal_fields.applicable_kinds = field
 dotnet_naming_symbols.private_internal_fields.applicable_accessibilities = private, internal
 dotnet_naming_style.camel_case_underscore_style.required_prefix = _
-dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case 
+dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case
 
 # Code style defaults
 dotnet_sort_system_directives_first = true

@@ -4,138 +4,132 @@ namespace AwsCredentialsManager;
 
 public class MainPageViewModel
 {
-	public AwsAccount? SelectedAccount { get; set; }
+    public AwsAccount? SelectedAccount { get; set; }
 
-	public ObservableCollection<AwsAccount> Accounts { get; } = [];
+    public ObservableCollection<AwsAccount> Accounts { get; } = [];
 }
 
-public partial class MainPage
+public partial class MainPage : ContentPage
 {
-	private readonly MainPageViewModel _viewModel = new MainPageViewModel();
-	private readonly string _credentialsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".aws\\credentials");
+    private readonly MainPageViewModel _viewModel = new MainPageViewModel();
+    private readonly string _credentialsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".aws\\credentials");
 
-	public MainPage()
-	{
-		InitializeComponent();
+    public MainPage()
+    {
+        InitializeComponent();
 
-		BindingContext = _viewModel;
-	}
+        BindingContext = _viewModel;
 
-	protected override async void OnAppearing()
-	{
-		base.OnAppearing();
+        Loaded += OnPageLoaded;
+    }
 
-		await LoadCredentials();
-	}
+    private async void OnPageLoaded(object? sender, EventArgs e)
+    {
+        await LoadCredentials();
+    }
 
-	private async Task LoadCredentials()
-	{
-		try
-		{
-			var accounts = await GetAccountsFromFile();
+    private async Task LoadCredentials()
+    {
+        try
+        {
+            var accounts = await GetAccountsFromFile();
 
-			if (accounts.Count == 0)
-			{
-				await ShowAlert("No accounts found in credentials file");
+            if (accounts.Count == 0)
+            {
+                await ShowAlert("No accounts found in credentials file");
 
-				return;
-			}
+                return;
+            }
 
-			_viewModel.Accounts.Clear();
+            _viewModel.Accounts.Clear();
 
-			foreach (var account in accounts)
-			{
-				_viewModel.Accounts.Add(account);
-			}
+            foreach (var account in accounts)
+            {
+                _viewModel.Accounts.Add(account);
+            }
 
-			_viewModel.SelectedAccount = _viewModel.Accounts.FirstOrDefault();
+            _viewModel.SelectedAccount = _viewModel.Accounts.FirstOrDefault();
 
-			CredentialsPicker.SelectedIndex = 0;
+            CredentialsPicker.SelectedIndex = 0;
 
-			MainLayout.IsVisible = true;
-		}
-		catch (Exception ex)
-		{
-			await ShowAlert(ex.Message);
-		}
-	}
+            MainLayout.IsVisible = true;
+        }
+        catch (Exception ex)
+        {
+            await ShowAlert(ex.Message);
+        }
+    }
 
-	private async Task<List<AwsAccount>> GetAccountsFromFile()
-	{
-		var accounts = new List<AwsAccount>();
+    private async Task<List<AwsAccount>> GetAccountsFromFile()
+    {
+        var accounts = new List<AwsAccount>();
 
-		await using Stream fs = File.OpenRead(_credentialsPath);
-		using var reader = new StreamReader(fs);
+        await using Stream fs = File.OpenRead(_credentialsPath);
+        using var reader = new StreamReader(fs);
 
-		AwsAccount? account = null;
+        AwsAccount? account = null;
 
-		while (!reader.EndOfStream)
-		{
-			var line = await reader.ReadLineAsync() ?? "";
+        while (!reader.EndOfStream)
+        {
+            var line = await reader.ReadLineAsync() ?? "";
 
-			if (string.IsNullOrWhiteSpace(line))
-			{
-				continue;
-			}
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
 
-			if (line.StartsWith('['))
-			{
-				account = new(line);
-				accounts.Add(account);
-			}
-			else
-			{
-				account?.SetProperty(line);
-			}
-		}
+            if (line.StartsWith('['))
+            {
+                account = new(line);
+                accounts.Add(account);
+            }
+            else
+            {
+                account?.SetProperty(line);
+            }
+        }
 
-		return accounts;
-	}
+        return accounts;
+    }
 
-	private async void OnSaveClicked(object sender, EventArgs e)
-	{
-		SemanticScreenReader.Announce(SaveButton.Text);
+    private async void OnSaveClicked(object sender, EventArgs e)
+    {
+        SemanticScreenReader.Announce(SaveButton.Text);
 
-		try
-		{
-			var backupPath = $"{_credentialsPath}.{DateTime.UtcNow:yyyyMMddHHmmss}.bak";
+        try
+        {
+            var backupPath = $"{_credentialsPath}.{DateTime.UtcNow:yyyyMMddHHmmss}.bak";
 
-			File.Copy(_credentialsPath, backupPath);
+            File.Copy(_credentialsPath, backupPath);
 
-			_viewModel.SelectedAccount!.SetProperties(InputEditor.Text);
+            _viewModel.SelectedAccount!.SetProperties(InputEditor.Text);
 
-			await using var sw = new StreamWriter(_credentialsPath);
+            await using var sw = new StreamWriter(_credentialsPath);
 
-			foreach (var account in _viewModel.Accounts)
-			{
-				foreach (var line in account.AsLineList())
-				{
-					await sw.WriteLineAsync(line);
-				}
-			}
+            foreach (var account in _viewModel.Accounts)
+            {
+                foreach (var line in account.AsLineList())
+                {
+                    await sw.WriteLineAsync(line);
+                }
+            }
 
-			InputEditor.Text = "";
+            InputEditor.Text = "";
 
-			await ShowAlert("Credentials saved");
-		}
-		catch (Exception ex)
-		{
-			await ShowAlert(ex.Message);
-		}
-	}
+            SaveButton.Text = "Credentials Saved!";
 
-	private async Task ShowAlert(string message)
-	{
-		await DisplayAlert("", message, "Got it");
+            await Task.Delay(1000);
 
-		// var cancellationTokenSource = new CancellationTokenSource();
-		//
-		// string text = "This is a Toast";
-		// ToastDuration duration = ToastDuration.Short;
-		// double fontSize = 14;
-		//
-		// var toast = Toast.Make(text, duration, fontSize);
-		//
-		// await toast.Show(cancellationTokenSource.Token);
-	}
+            SaveButton.Text = "Save Credentials";
+        }
+        catch (Exception ex)
+        {
+            await ShowAlert(ex.Message);
+        }
+    }
+
+    private async Task ShowAlert(string message)
+    {
+        await DisplayAlert("", message, "Got it");
+    }
 }

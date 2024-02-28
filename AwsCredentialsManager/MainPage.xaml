@@ -1,35 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-			 x:Class="AwsCredentialsManager.MainPage">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="AwsCredentialsManager.MainPage">
 
-	<ScrollView>
-		<VerticalStackLayout x:Name="MainLayout" Padding="25" Spacing="25" IsVisible="False">
+    <ScrollView>
+        <Grid x:Name="MainLayout" Padding="15" ColumnSpacing="15" RowSpacing="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-			<Label Text="Select credentials" />
+            <Picker
+                x:Name="CredentialsPicker"
+                Grid.Column="0"
+                Grid.Row="0"
+                ItemsSource="{Binding Accounts}"
+                ItemDisplayBinding="{Binding Name}"
+                SelectedItem="{Binding SelectedAccount, Mode = TwoWay}" />
 
-			<Picker x:Name="CredentialsPicker"
-					ItemsSource="{Binding Accounts}"
-					ItemDisplayBinding="{Binding Name}"
-					SelectedItem="{Binding SelectedAccount, Mode = TwoWay}" />
+            <Button
+                x:Name="SaveButton"
+                Grid.Column="1"
+                Grid.Row="0"
+                Text="Save Credentials"
+                Clicked="OnSaveClicked"
+                HorizontalOptions="Fill" />
 
-			<Label x:Name="InputLabel" Text="Paste credentials" />
+            <Editor
+                x:Name="InputEditor"
+                Grid.Column="0"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Placeholder="Paste credentials">
+                <Editor.Behaviors>
+                    <toolkit:SelectAllTextBehavior />
+                </Editor.Behaviors>
+            </Editor>
 
-			<Editor x:Name="InputEditor" AutoSize="TextChanges" MinimumHeightRequest="200">
-				<Editor.Behaviors>
-					<toolkit:SelectAllTextBehavior />
-				</Editor.Behaviors>
-			</Editor>
-
-			<Button
-				x:Name="SaveButton"
-				Text="Save Credentials"
-				SemanticProperties.Hint="Saves AWS credentials to file"
-				Clicked="OnSaveClicked"
-				HorizontalOptions="Fill" />
-
-		</VerticalStackLayout>
-	</ScrollView>
+        </Grid>
+    </ScrollView>
 
 </ContentPage>
