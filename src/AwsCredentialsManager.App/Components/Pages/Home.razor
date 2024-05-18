@@ -10,15 +10,10 @@ else
         <div id="grid-accounts">
             @foreach (var item in _accounts)
             {
-                var isChecked = _selectedAccountKey == item.Key;
-                <div class="card mb-3">
+                var isSelected = _selectedAccountKey == item.Key;
+                <div class="card mb-3 @(isSelected ? "text-bg-success" : "")" @onclick="() => SelectAccount(item.Key)">
                     <div class="card-body">
-                        <div class="form-check">
-                            <input type="radio" id="@item.Key" value="@item.Key" class="form-check-input" @onchange="() => SelectAccount(item.Key)" checked="@isChecked" />
-                            <label class="form-check-label" for="@item.Key">
-                                @item.Value.Name
-                            </label>
-                        </div>
+                        @item.Value.Name
                     </div>
                 </div>
             }
@@ -26,18 +21,16 @@ else
         <div id="grid-form">
             <div class="d-flex mb-3">
                 <div class="flex-grow-1">@_statusMessage</div>
-                <button type="button" class="btn btn-primary ms-3" @onclick="PasteCredentials">Paste</button>
-                <button type="submit" class="btn btn-primary ms-3" @onclick="SaveAccounts" disabled="@(!_saveEnabled)">Submit</button>
+                <button type="button" class="btn btn-success ms-3" @onclick="PasteCredentials">Paste</button>
+                <button type="submit" class="btn btn-success ms-3" @onclick="SaveAccounts" disabled="@(!_saveEnabled)">Save</button>
             </div>
-            <EditForm Model="_selectedAccount" OnSubmit="SaveAccounts">
-                @foreach (var property in _selectedAccount!.Properties)
-                {
-                    <div class="mb-3">
-                        <label for="@property.Key" class="form-label">@property.Key</label>
-                        <input id="@property.Key" class="form-control" value="@property.Value" @onchange="e => ChangeProperty(property.Key, (string)e.Value!)" />
-                    </div>
-                }
-            </EditForm>
+            @foreach (var property in _selectedAccount!.Properties)
+            {
+                <div class="mb-3">
+                    <label for="@property.Key" class="form-label">@property.Key</label>
+                    <input id="@property.Key" class="form-control" value="@property.Value" @onchange="e => ChangeProperty(property.Key, (string)e.Value!)" />
+                </div>
+            }
         </div>
     </div>
 }

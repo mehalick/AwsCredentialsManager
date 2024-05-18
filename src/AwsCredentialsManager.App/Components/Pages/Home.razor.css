@@ -3,3 +3,7 @@
     grid-template-columns: min-content auto;
     grid-gap: 24px;
 }
+
+#grid-accounts .card {
+    cursor: pointer;
+}

@@ -20,24 +20,27 @@ public partial class Home : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-      _accounts = await FileService.GetAccounts();
-      if (_accounts.Count == 0)
-      {
-        SetStatus("No accounts in credentials file");
-      }
-      else
-      {
-        _selectedAccount = _accounts.First<KeyValuePair<string, AwsAccount>>().Value;
-        _selectedAccountKey = _selectedAccount.Id;
-        SetStatus("Accounts loaded from credentials file");
-      }
+        _accounts = await FileService.GetAccounts();
+
+        if (_accounts.Count == 0)
+        {
+            SetStatus("No accounts in credentials file");
+        }
+        else
+        {
+            _selectedAccount = _accounts.First().Value;
+            _selectedAccountKey = _selectedAccount.Id;
+
+            SetStatus("Accounts loaded from credentials file");
+        }
     }
 
     private void SelectAccount(string key)
     {
-      _selectedAccountKey = key;
-      _selectedAccount = _accounts[key];
-      SetStatus(_selectedAccount?.Name + " selected");
+        _selectedAccountKey = key;
+        _selectedAccount = _accounts[key];
+
+        SetStatus(_selectedAccount?.Name + " selected");
     }
 
     private void ChangeProperty(string key, string value)
@@ -49,6 +52,7 @@ public partial class Home : ComponentBase
 
       _selectedAccount.Properties[key] = value;
       _saveEnabled = true;
+
       SetStatus(_selectedAccount?.Name + " updated");
     }
 
@@ -57,23 +61,26 @@ public partial class Home : ComponentBase
       var lines = await ClipboardService.ReadTextAsync();
       if (string.IsNullOrWhiteSpace(lines) || lines[0] != '[')
       {
-        SetStatus("No account credentials in clipboard");
+          SetStatus("No account credentials in clipboard");
       }
       else
       {
-        _selectedAccount?.AddProperties(lines);
-        SetStatus(_selectedAccount?.Name + " updated from clipboard");
+          _selectedAccount?.AddProperties(lines);
+          _saveEnabled = true;
+
+          SetStatus(_selectedAccount?.Name + " updated from clipboard");
       }
     }
 
     private async Task SaveAccounts()
     {
-      await FileService.SaveAccounts(_accounts);
-      SetStatus("Credentials saved");
+        await FileService.SaveAccounts(_accounts);
+
+        SetStatus("Credentials saved");
     }
 
     private void SetStatus(string status)
     {
-      _statusMessage = $"{DateTime.Now:yyy-MM-dd HH:mm:ss} {status}";
+        _statusMessage = $"{DateTime.Now:yyy-MM-dd HH:mm:ss} {status}";
     }
 }

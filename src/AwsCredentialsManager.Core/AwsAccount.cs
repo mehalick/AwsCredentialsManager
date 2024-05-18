@@ -24,9 +24,9 @@ public class AwsAccount
 
     public void AddProperties(string lines)
     {
-        var arry = lines.Split(Environment.NewLine);
+        var items = lines.Split(Environment.NewLine);
 
-        foreach (var item in arry)
+        foreach (var item in items)
         {
             AddProperty(item);
         }
@@ -47,15 +47,6 @@ public class AwsAccount
         }
 
         Properties[property[0]] = property[1];
-
-        // if (Properties.ContainsKey(property[0]))
-        // {
-        //     Properties[property[0]] = property[1];
-        // }
-        // else
-        // {
-        //     Properties.Add(property[0], property[1]);
-        // }
     }
 
     private static string RemoveWhiteSpace(string s)
