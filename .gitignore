@@ -26,8 +26,6 @@ msbuild.err
 msbuild.wrn
 artifacts/
 
-# NPM
 node_modules
-**/wwwroot/dist/
-
-deploy.ps1
+wwwroot/dist/
+_tmp/

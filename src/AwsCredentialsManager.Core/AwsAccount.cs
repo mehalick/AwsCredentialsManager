@@ -22,6 +22,16 @@ public class AwsAccount
         Name = name;
     }
 
+    public void AddProperties(string lines)
+    {
+        var arry = lines.Split(Environment.NewLine);
+
+        foreach (var item in arry)
+        {
+            AddProperty(item);
+        }
+    }
+
     public void AddProperty(string line)
     {
         if (string.IsNullOrWhiteSpace(line) || line.StartsWith('['))
@@ -36,7 +46,16 @@ public class AwsAccount
             throw new ArgumentException($"Property string '{line}' contains unexpected format.", nameof(line));
         }
 
-        Properties.Add(property[0], property[1]);
+        Properties[property[0]] = property[1];
+
+        // if (Properties.ContainsKey(property[0]))
+        // {
+        //     Properties[property[0]] = property[1];
+        // }
+        // else
+        // {
+        //     Properties.Add(property[0], property[1]);
+        // }
     }
 
     private static string RemoveWhiteSpace(string s)
