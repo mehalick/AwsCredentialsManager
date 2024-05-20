@@ -11,24 +11,24 @@ else
             @foreach (var item in _accounts)
             {
                 var isSelected = _selectedAccountKey == item.Key;
-                <div class="card mb-3 @(isSelected ? "text-bg-success" : "")" @onclick="() => SelectAccount(item.Key)">
-                    <div class="card-body">
-                        @item.Value.Name
-                    </div>
+                <div class="ui-card @(isSelected ? "ui-card-selected" : "")" @onclick="() => SelectAccount(item.Key)">
+                    @item.Value.Name
                 </div>
             }
         </div>
-        <div id="grid-form">
-            <div class="d-flex mb-3">
-                <div class="flex-grow-1">@_statusMessage</div>
-                <button type="button" class="btn btn-success ms-3" @onclick="PasteCredentials">Paste</button>
-                <button type="submit" class="btn btn-success ms-3" @onclick="SaveAccounts" disabled="@(!_saveEnabled)">Save</button>
+        <div id="grid-details">
+            <div id="grid-toolbar">
+                <div class="d-flex">
+                    <div id="status-message" class="flex-grow-1">@_statusMessage</div>
+                    <button type="button" class="btn ms-3" @onclick="PasteCredentials">Paste</button>
+                    <button type="submit" class="btn ms-3" @onclick="SaveAccounts" disabled="@(!_saveEnabled)">Save</button>
+                </div>
             </div>
             @foreach (var property in _selectedAccount!.Properties)
             {
-                <div class="mb-3">
+                <div class="account-property ui-card">
                     <label for="@property.Key" class="form-label">@property.Key</label>
-                    <input id="@property.Key" class="form-control" value="@property.Value" @onchange="e => ChangeProperty(property.Key, (string)e.Value!)" />
+                    <input id="@property.Key" class="form-control" value="@property.Value" @onchange="e => ChangeProperty(property.Key, (string) e.Value!)"/>
                 </div>
             }
         </div>

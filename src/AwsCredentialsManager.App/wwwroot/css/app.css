@@ -1,5 +1,64 @@
-﻿html, body {
+﻿:root {
+    --ui-background: #1b1837;
+    --ui-primary-dark: #161622;
+    --ui-orange: #fe5721;
+    --ui-margin: 28px;
+}
 
+html, body {
+    background-color: var(--ui-background);
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: min-content auto;
+    grid-template-areas:
+        "accounts details";
+    grid-gap: var(--ui-margin);
+}
+
+#grid-accounts {
+    grid-area: accounts;
+}
+
+#grid-accounts .ui-card {
+    cursor: pointer;
+}
+
+#grid-accounts .ui-card:hover {
+    color: var(--ui-orange);
+}
+
+#grid-accounts .ui-card-selected {
+    color: var(--ui-orange);
+}
+
+#grid-toolbar {
+    margin-bottom: var(--ui-margin);
+}
+
+#grid-details {
+    grid-area: details;
+}
+
+#grid-details .account-property .form-control {
+    background-color: var(--ui-primary-dark);
+}
+
+.ui-card {
+    margin: 0 0 var(--ui-margin) 0;
+    padding: 24px;
+    background-color: var(--ui-primary-dark);
+    border-radius: 12px;
+    filter: drop-shadow(-12px 8px 12px #000);
+}
+
+.btn {
+    background-color: var(--ui-orange);
+}
+
+.btn:hover {
+    background-color: #b13c17;
 }
 
 #blazor-error-ui {
