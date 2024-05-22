@@ -1,9 +1,9 @@
-﻿using AwsCredentialsManager.App.Services;
-using AwsCredentialsManager.Core;
+﻿using AwsCredentialsManager.Core;
 using Microsoft.AspNetCore.Components;
 
 namespace AwsCredentialsManager.App.Components.Pages;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public partial class Home : ComponentBase
 {
     private Dictionary<string, AwsAccount> _accounts = new Dictionary<string, AwsAccount>();
@@ -11,9 +11,6 @@ public partial class Home : ComponentBase
     private string _selectedAccountKey = "";
     private bool _saveEnabled;
     private string _statusMessage = "";
-
-    [Inject]
-    protected ClipboardService ClipboardService { get; set; } = null!;
 
     [Inject]
     protected FileService FileService { get; set; } = null!;
@@ -58,18 +55,19 @@ public partial class Home : ComponentBase
 
     private async Task PasteCredentials()
     {
-      var lines = await ClipboardService.ReadTextAsync();
-      if (string.IsNullOrWhiteSpace(lines) || lines[0] != '[')
-      {
-          SetStatus("No account credentials in clipboard");
-      }
-      else
-      {
-          _selectedAccount?.AddProperties(lines);
-          _saveEnabled = true;
+        var lines = await Clipboard.GetTextAsync();
 
-          SetStatus(_selectedAccount?.Name + " updated from clipboard");
-      }
+        if (string.IsNullOrWhiteSpace(lines) || lines[0] != '[')
+        {
+            SetStatus("No account credentials in clipboard");
+        }
+        else
+        {
+            _selectedAccount?.AddProperties(lines);
+            _saveEnabled = true;
+
+            SetStatus(_selectedAccount?.Name + " updated from clipboard");
+        }
     }
 
     private async Task SaveAccounts()

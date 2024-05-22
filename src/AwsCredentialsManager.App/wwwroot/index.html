@@ -7,7 +7,8 @@
     <base href="/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
-    <link rel="stylesheet" href="AwsCredentialsManager.App.styles.css" />
+    <link rel="stylesheet" href="assets/fontawesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="assets/fontawesome/css/light.min.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
 </head>
 
@@ -24,6 +25,13 @@
     </div>
 
     <script src="_framework/blazor.webview.js" autostart="false"></script>
+    <script>
+        function handlePermission() {
+            navigator.permissions.query({ name: "clipboard-read" }).then((result) => {
+                return result.state;
+            });
+        }
+    </script>
 
 </body>
 

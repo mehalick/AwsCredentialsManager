@@ -7,26 +7,26 @@
 else
 {
     <div id="grid">
-        <div id="grid-accounts">
+        <div id="account-list">
             @foreach (var item in _accounts)
             {
                 var isSelected = _selectedAccountKey == item.Key;
-                <div class="ui-card @(isSelected ? "ui-card-selected" : "")" @onclick="() => SelectAccount(item.Key)">
+                <div class="account-item ui-card @(isSelected ? "selected" : "")" @onclick="() => SelectAccount(item.Key)">
                     @item.Value.Name
                 </div>
             }
         </div>
-        <div id="grid-details">
-            <div id="grid-toolbar">
-                <div class="d-flex">
+        <div id="account-details">
+            <div id="account-toolbar">
+                <div class="d-flex align-items-center">
                     <div id="status-message" class="flex-grow-1">@_statusMessage</div>
-                    <button type="button" class="btn ms-3" @onclick="PasteCredentials">Paste</button>
+                    <button type="button" class="btn ms-3" @onclick="PasteCredentials"><i class="fa-light fa-paste"></i> Paste</button>
                     <button type="submit" class="btn ms-3" @onclick="SaveAccounts" disabled="@(!_saveEnabled)">Save</button>
                 </div>
             </div>
             @foreach (var property in _selectedAccount!.Properties)
             {
-                <div class="account-property ui-card">
+                <div class="property-item ui-card">
                     <label for="@property.Key" class="form-label">@property.Key</label>
                     <input id="@property.Key" class="form-control" value="@property.Value" @onchange="e => ChangeProperty(property.Key, (string) e.Value!)"/>
                 </div>

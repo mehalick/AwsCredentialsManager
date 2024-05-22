@@ -1,7 +1,8 @@
 ﻿:root {
-    --ui-background: #1b1837;
-    --ui-primary-dark: #161622;
-    --ui-orange: #fe5721;
+    --ui-background: #11131d;
+    --ui-container-dark: #1e1f29;
+    --ui-container-light: #373844;
+    --ui-secondary: #0034f3;
     --ui-margin: 28px;
 }
 
@@ -17,48 +18,58 @@ html, body {
     grid-gap: var(--ui-margin);
 }
 
-#grid-accounts {
+#account-list {
     grid-area: accounts;
 }
 
-#grid-accounts .ui-card {
+#account-list .account-item {
+    background-color: var(--ui-container-dark);
     cursor: pointer;
 }
 
-#grid-accounts .ui-card:hover {
-    color: var(--ui-orange);
+#account-list .account-item:hover:not(.selected) {
+    filter: brightness(150%);
 }
 
-#grid-accounts .ui-card-selected {
-    color: var(--ui-orange);
+#account-list .account-item.selected {
+    background-color: var(--ui-secondary);
 }
 
-#grid-toolbar {
+#account-list .account-item.selected:hover {
+    color: white;
+    background-color: var(--ui-secondary);
+    cursor: default;
+}
+
+#account-toolbar {
     margin-bottom: var(--ui-margin);
 }
 
-#grid-details {
+#account-details {
     grid-area: details;
 }
 
-#grid-details .account-property .form-control {
-    background-color: var(--ui-primary-dark);
+#account-details .property-item {
+    background-color: var(--ui-container-light);
 }
 
 .ui-card {
     margin: 0 0 var(--ui-margin) 0;
     padding: 24px;
-    background-color: var(--ui-primary-dark);
-    border-radius: 12px;
-    filter: drop-shadow(-12px 8px 12px #000);
+    border-radius: 4px;
+    /*filter: drop-shadow(-12px 8px 12px #000);*/
 }
 
-.btn {
-    background-color: var(--ui-orange);
+.btn, .btn:hover {
+    background-color: var(--ui-secondary);
 }
 
 .btn:hover {
-    background-color: #b13c17;
+    filter: brightness(150%);
+}
+
+.form-control {
+    background-color: var(--ui-container-light);
 }
 
 #blazor-error-ui {

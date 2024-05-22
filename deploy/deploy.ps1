@@ -1,7 +1,7 @@
 ﻿$ErrorActionPreference = 'Stop'
 
 $tmpPath = ".\_tmp"
-$zipPath = ".\_tmp\AwsCredentialsManager.zip"
+$zipPath = ".\AwsCredentialsManager.zip"
 $s3Path = "s3://.../AwsCredentialsManager.zip"
 
 #aws s3 ls --profile cli
@@ -22,7 +22,6 @@ dotnet publish `
     --output $tmpPath
 
 Compress-Archive -Path $($tmpPath + "\*") -DestinationPath $zipPath -Force
+Remove-Item $tmpPath -Recurse
 
 #aws s3 cp $zipPath $s3Path --profile ...
-
-#Remove-Item $tmpPath -Recurse

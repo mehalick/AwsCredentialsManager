@@ -1,5 +1,4 @@
-﻿using AwsCredentialsManager.App.Services;
-using AwsCredentialsManager.Core;
+﻿using AwsCredentialsManager.Core;
 using Microsoft.Extensions.Logging;
 
 namespace AwsCredentialsManager.App;
@@ -17,7 +16,6 @@ public static class MauiProgram
             });
 
         builder.Services.AddMauiBlazorWebView();
-        builder.Services.AddScoped<ClipboardService>();
         builder.Services.AddScoped<FileService>();
 
 #if DEBUG

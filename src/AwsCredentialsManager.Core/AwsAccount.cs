@@ -4,7 +4,7 @@ public class AwsAccount
 {
     public string Id { get; }
     public string Name { get; }
-    public Dictionary<string, string> Properties { get; } = new Dictionary<string, string>();
+    public SortedDictionary<string, string> Properties { get; } = new SortedDictionary<string, string>();
 
     public AwsAccount(string name)
     {
